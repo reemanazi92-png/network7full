@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مراجعة</title>
+
+<style>
+body{
+margin:0;
+font-family:Tahoma,Arial;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+}
+
+.container{max-width:1000px;margin:auto;padding:20px;}
+
+.card{
+background:white;
+color:black;
+padding:25px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+h1{text-align:center;color:#38bdf8;}
+
+#timer{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+color:#fbbf24;
+margin-bottom:15px;
+}
+
+.q{
+border:1px solid #ddd;
+padding:15px;
+margin:15px 0;
+border-radius:12px;
+}
+
+label{display:block;padding:6px;cursor:pointer;}
+
+button{
+width:100%;
+padding:14px;
+font-size:18px;
+border:none;
+border-radius:12px;
+background:#38bdf8;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{background:#0ea5e9;}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<h1>مراجعة</h1>
+<div id="timer">15:00</div>
+
+<div id="quiz"></div>
+
+<button onclick="grade()">إنهاء الاختبار</button>
+
+<div id="result"></div>
+
+</div>
+</div>
+
+<script>
+
+let questions = [
+
+["ما الهدف الأساسي من أنظمة التشفير؟",
+["حماية المعلومات الرقمية وضمان سريتها وسلامتها","زيادة سرعة الشبكة","تقليل حجم الملفات","مشاركة البيانات علناً"],0],
+
+["ما هو Plain Text؟",
+["بيانات يمكن قراءتها وفهمها بسهولة","بيانات مشفرة","ملفات مضغوطة","كلمات مرور فقط"],0],
+
+["ما هو Cipher Text؟",
+["بيانات مشفرة غير مفهومة","نص واضح","ملف صوت","صورة"],0],
+
+["RSA يستخدم في:",
+["التشفير غير المتماثل","التشفير المتماثل","ضغط البيانات","إدارة الملفات"],0],
+
+["في التشفير غير المتماثل نستخدم:",
+["مفتاحين (عام وخاص)","مفتاح واحد","ثلاثة مفاتيح","بدون مفاتيح"],0],
+
+["المفتاح الخاص يستخدم لـ:",
+["فك التشفير","التشفير فقط","التصفح","الحذف"],0],
+
+["المفتاح العام يستخدم لـ:",
+["التشفير","الحذف","النسخ","الفتح"],0],
+
+["VPN الهدف منه:",
+["تأمين الاتصال عبر الإنترنت","زيادة السرعة","حذف البيانات","تعطيل الشبكة"],0],
+
+["Site-to-Site VPN يستخدم ل:",
+["ربط شبكتين","جهاز واحد","ملفات","مستخدم واحد"],0],
+
+["Remote VPN يستخدم ل:",
+["المستخدمين عن بعد","الشركات فقط","الطابعات","الأجهزة الداخلية"],0],
+
+["Firewall هو:",
+["نظام حماية للشبكة","متصفح","برنامج ألعاب","ملف"],0],
+
+["Packet Filtering يفحص:",
+["IP والمنفذ والبروتوكول","اسم الجهاز فقط","الصور","الفيديو"],0],
+
+["Proxy Firewall يعمل كـ:",
+["وسيط بين المستخدم والإنترنت","جهاز تخزين","متصفح","شبكة"],0],
+
+["IPsec يهدف إلى:",
+["تأمين الاتصال","زيادة السرعة","حذف الملفات","ضغط البيانات"],0],
+
+["Wireshark يستخدم لـ:",
+["تحليل الشبكات","التصميم","البرمجة","الألعاب"],0],
+
+["Authentication تعني:",
+["التحقق من الهوية","زيادة السرعة","الضغط","الحذف"],0],
+
+["Integrity تعني:",
+["عدم التعديل على البيانات","الحذف","النسخ","الإرسال"],0],
+
+["Non-repudiation تعني:",
+["عدم الإنكار","السرعة","الضغط","الحذف"],0],
+
+["التوقيع الرقمي يستخدم لـ:",
+["توثيق الهوية","زيادة السرعة","ضغط الملفات","التصفح"],0],
+
+["جدار الحماية يعمل على:",
+["حماية الشبكة","التخزين","التصميم","البرمجة"],0],
+
+["الهجمات السيبرانية تهدف إلى:",
+["اختراق الأنظمة","تحسين الأداء","زيادة الأمان","التحديث"],0],
+
+["زيادة طول المفتاح تؤدي إلى:",
+["زيادة الأمان","تقليل الأمان","لا تأثير","حذف البيانات"],0],
+
+["الشبكات غير الآمنة تعتبر:",
+["خطيرة","آمنة","سريعة","مضمونة"],0],
+
+["VPN يستخدم غالباً في:",
+["الشبكات العامة","الشبكات المحلية فقط","الطابعات","الألعاب فقط"],0],
+
+["أداة تحليل الشبكات:",
+["Wireshark","Word","Excel","Paint"],0],
+
+["الأمن السيبراني يهدف إلى:",
+["تقليل المخاطر","زيادة المشاكل","حذف الإنترنت","إيقاف الشبكات"],0],
+
+["البيانات الحساسة يجب:",
+["حمايتها","نشرها","حذفها","تركها"],0],
+
+["المهاجم السيبراني يسمى:",
+["Hacker","User","Admin","Client"],0],
+
+["ASA جهاز يستخدم لـ:",
+["الحماية الأمنية","التصميم","التصفح","الألعاب"],0],
+
+["ASDM هو:",
+["واجهة إدارة","متصفح","فيروس","برنامج"],0],
+
+["التشفير يحول البيانات إلى:",
+["رموز غير مفهومة","صور","فيديو","ملفات"],0]
+
+];
+
+questions.sort(()=>Math.random()-0.5);
+
+let quiz=document.getElementById("quiz");
+
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="q";
+
+let html=`<h3>${i+1}. ${q[0]}</h3>`;
+
+q[1].forEach((a,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${a}</label>`;
+});
+
+div.innerHTML=html;
+quiz.appendChild(div);
+});
+
+function grade(){
+let score=0;
+
+questions.forEach((q,i)=>{
+let sel=document.querySelector('input[name=q'+i+']:checked');
+if(sel && Number(sel.value)===q[2]) score++;
+});
+
+document.getElementById("result").innerHTML=
+"<h2> النتيجة: "+score+" / "+questions.length+"</h2>";
+}
+
+let t=900;
+setInterval(()=>{
+if(t<=0){grade();return;}
+t--;
+let m=Math.floor(t/60);
+let s=t%60;
+document.getElementById("timer").innerText=m+":"+String(s).padStart(2,"0");
+},1000);
+
+</script>
+
+</body>
+</html>
